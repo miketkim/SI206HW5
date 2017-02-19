@@ -55,21 +55,30 @@ api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to g
 
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
-## 2. Write a function to get twitter data that works with the caching pattern, so it either gets new data or caches data, depending upon what the input to search for is. You can model this off the class exercise from Tuesday.
-## 3. Invoke your function, save the return value in a variable, and explore the data you got back!
-## 4. With what you learn from the data -- e.g. how exactly to find the text of each tweet in the big nested structure -- write code to print out content from 3 tweets, as shown above.
-
-CACHE_FNAME = 'search_cached.json'
-
+CACHE_FNAME = "cached_data.json"
 try:
-    cache_file = open(CACHE_FNAME, 'r')
-    cache_contents = cache_file.read()
-    CACHE_DICTION = json.loads(cache_contents)
-    cache_file.close()
+	cache_file = open(CACHE_FNAME,'r') #reading the data from the cache file
+	cache_contents = cache_file.read() # get the data into a string
+	CACHE_DICTION = json.loads(cache_contents) #load that stuff info a dictionary
+	cache_file.close() # close that file when were done with i
 except:
-    CACHE_DICTION = {}
+	CACHE_DICTION = {}
 
+search = input("Enter something you want to search for on Twitter: ")
+def twitter_data(search):
+	if search in CACHE_DICTION:
+		results = CACHE_DICTION[search]
+	else:
+		results = api.search(q = search)
+		CACHE_DICTION[search] = results
+		data = open(twitter_cache_data, 'w')
+		data.write(json.dumps(CACHE_DICTION))
+		data.close
+	tweets = results['statuses']
+	return tweets
 
-
-
+for items in twitter_data(search)[0:3]:
+	print(items['text'])
+	print(items['created_at'])
+	print("\n")
 
