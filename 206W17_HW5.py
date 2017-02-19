@@ -64,7 +64,7 @@ try:
 except:
 	CACHE_DICTION = {}
 
-search = input("Enter something you want to search for on Twitter: ")
+search = input("Find 3 tweets about: ")
 def twitter_data(search):
 	if search in CACHE_DICTION:
 		results = CACHE_DICTION[search]
@@ -77,8 +77,8 @@ def twitter_data(search):
 	tweets = results['statuses']
 	return tweets
 
-for items in twitter_data(search)[0:3]:
-	print(items['text'])
-	print(items['created_at'])
+for x in twitter_data(search)[:3]:
+	print("Tweet: "+ x['text'])
+	print("Time: "+ x['created_at'])
 	print("\n")
 
