@@ -55,7 +55,7 @@ api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to g
 
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
-CACHE_FNAME = "cached_data.json"
+CACHE_FNAME = "cached_data.txt"
 try:
 	cache_file = open(CACHE_FNAME,'r') #reading the data from the cache file
 	cache_contents = cache_file.read() # get the data into a string
@@ -67,11 +67,13 @@ except:
 search = input("Find 3 tweets about: ")
 def twitter_data(search):
 	if search in CACHE_DICTION:
+		print ("Using saved data!")
 		results = CACHE_DICTION[search]
 	else:
+		print ('Getting twitter data!')
 		results = api.search(q = search)
 		CACHE_DICTION[search] = results
-		data = open(twitter_cache_data, 'w')
+		data = open(CACHE_FNAME, 'w')
 		data.write(json.dumps(CACHE_DICTION))
 		data.close
 	tweets = results['statuses']
